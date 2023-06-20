@@ -1,0 +1,41 @@
+{% extends "network/reusable_content/layout.html" %}
+{% block body %}
+
+<span class="central-element">
+    <h1>{{ selected_user.username }}</h1>
+    {% load thumbnail %}<img class="profile-img" src="{{ selected_user.profile.photo|thumbnail_url:'avatar' }}"
+        alt="" />
+    <br>
+    <br>
+    <div class="follower-count">Following: {{ following.count }}
+        Followers: {{ followers.count }}
+    </div>
+    <div id="pagination-container">
+        <div id="un/follow">
+            {% if user.is_authenticated %}
+            {% if selected_user != current_user %}
+            {% if is_follower %}
+            <form action="{% url 'unfollow' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="user_unfollow" value="{{ selected_user }}">
+                <button class="unfollow" href="{% url 'unfollow' %}" input type="Submit"
+                    value="Unfollow">Unfollow</button>
+            </form>
+            {% else %}
+            <form action="{% url 'follow' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="user_follow" value="{{ selected_user }}">
+                <button class="follow" input type="Submit" value="Follow">Follow</button>
+            </form>
+            {% endif %}{% endif %}
+            <br>
+        </div>
+
+        {% include "network/reusable_content/posts.html" %}
+
+        {% endif %}
+    </div>
+
+</span>
+
+{% endblock %}

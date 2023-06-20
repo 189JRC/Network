@@ -1,0 +1,17 @@
+{% extends "network/reusable_content/layout.html" %}
+{% block body %}
+<span class="central-element">
+    <h1>All Posts</h1>
+    <div id="pagination-container">
+        <a id="{{ request.user.id }}" class="user-id"></a>
+        <div class="new-post-div">
+            <form class="new-post-input-form" onsubmit="newPost()">
+                <input id="new-post-input">
+                <button class="new-post-btn" type="button" onclick="newPost()">Submit</button>
+            </form>
+        </div>
+        {% include "network/reusable_content/posts.html" %}
+    </div>
+</span>
+
+{% endblock %}

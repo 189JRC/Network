@@ -1,0 +1,18 @@
+{% extends "network/reusable_content/layout.html" %}
+
+{% block body %}
+
+{% if message %}
+<div>{{ message }}</div>
+{% endif %}
+
+<form class="login" action="{% url 'login' %}" method="post">
+    <h1>Login</h1>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input class="form-fields" type="submit" value="Login">
+</form>
+Don't have an account? <a href="{% url 'register' %}">Register here.</a>
+
+
+{% endblock %}

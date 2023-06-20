@@ -1,0 +1,54 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Network{% endblock %}</title>
+    <script type="text/javascript" src="{% static 'network/main.js' %}"></script>
+    <script type="text/javascript" src="{% static 'network/like.js' %}"></script>
+    <link href="{% static 'network/styles.css' %}" rel="stylesheet">
+</head>
+
+<body>
+    <div id="title_bar">
+        <a class="brand" href="#">LINE OF SIGHT</a>
+        <div>
+            <ul class="menu">
+                <li class="item">
+                    <a class="nav-link" href="{% url 'index' %}">All Posts</a>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="item">
+                    <a class="nav-link" href="{% url 'following' %}">Following</a>
+                </li>
+                <li class="item">
+                    <a class="nav-link" href="{% url 'all_users' %}">All Users</a>
+                </li>
+                {% else %}
+                <li class="item">
+                    <a class="nav-link" href="{% url 'login' %}">Log In</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'register' %}">Register</a>
+                </li>
+                {% endif %}
+                {% if user.is_authenticated %}
+                <span class="user_specific">
+                    <a class="nav-link" href="{% url 'profile_update' user.id %}">Hello, <strong>
+                            {{ user.username }}</strong></a>
+                    <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+                </span>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+    <div class="center">
+        {% block body %}
+        {% endblock %}
+    </div>
+</body>
+
+</html>

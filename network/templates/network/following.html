@@ -1,0 +1,24 @@
+{% extends "network/reusable_content/layout.html" %}
+{% block body %}
+<span class="central-element">
+    <h1>{{ followed.count }} Accounts Followed:</h1>
+
+    {% for account in followed %}
+    <div class="profile-img-2">
+        {% load thumbnail %}
+        <p><img class="thumb" src="{{ account.following.profile.photo|thumbnail_url:'post' }}"
+                alt="imagine a profile image" /></p>
+        <h1><a href="{% url 'profile_view' account.following.id %}">
+                {{ account.following }}
+            </a></h1>
+    </div>
+    {% endfor %}
+    <div class="following-div">
+        <div id="pagination-container">
+            {% include "network/reusable_content/posts.html" %}
+        </div>
+
+    </div>
+</span>
+
+{% endblock %}

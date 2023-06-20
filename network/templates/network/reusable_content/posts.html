@@ -1,0 +1,57 @@
+<div id="all-posts">
+    {% for post in page_obj %}
+    <div id="post-tile/{{ post.id }}" class="single-post-div">
+        <div class="post-details">
+
+            {% load thumbnail %}
+            <span><img class="post-thumbnail" src="{{ post.user.profile.photo|thumbnail_url:'post' }}"
+                    alt="imagine a profile image" /></span>
+            <span class="post-header">
+                Post by <a href="/profile/{{ post.user.id }}">{{ post.user }}</a>
+                <em class="post-time-up">{{post.time_up }}</em>
+            </span>
+
+            <div id="post-content/{{ post.id }}" class="post-content">
+                <p id="post-text-content/{{post.id}}" class="post-content">{{ post.content }}</p>
+                {% if user.is_authenticated %}
+                {% if request.user == post.user %}
+                <div class="edit-content-input">
+                    <input id="edit-post-content/{{ post.id }}" class="edit-post-input" value="{{ post.content }}">
+
+                    <button id="edit-post-btn/{{ post.id }}" class="edit-post-btn" type="button" value="edit"
+                        onclick="editPost('{{post.id}}')">Edit Post</button>
+                    <button id="delete-post-btn/{{post.id}}" class="delete-post-btn" type="button"
+                        onclick="deletePost('{{post.id}}')">
+                        Delete</button>
+
+                    <button class="submit-edit-btn" id="submit-edit-btn/{{ post.id }}" type="button" value="submit"
+                        onclick="updatePost('{{post.id}}')">Submit</button>
+                    <button id="cancel-edit-btn/{{post.id}}" class="cancel-edit-btn" type="button"
+                        onclick="cancelEdit('{{post.id}}')">
+                        Cancel</button>
+                    {% endif %}
+
+                    {% if post in liked_posts and request.user == post.user %}
+                    <a id="like-btn/{{post.id}}" class="like-btn" onclick="unlike('{{post.id}}')">&#127774;</a>
+                    {% elif post not in liked_posts and request.user == post.user %}
+                    <a id="like-btn/{{post.id}}" class="like-btn" onclick="like('{{post.id}}')">&#127770;</a>
+                    {% elif post in liked_posts and request.user != post.user %}
+                    <a id="like-btn/{{post.id}}" class="like-btn-alt" onclick="unlike('{{post.id}}')">&#127774;</a>
+                    {% elif post not in liked_posts and request.user != post.user %}
+                    <a id="like-btn/{{post.id}}" class="like-btn-alt" onclick="like('{{post.id}}')">&#127770;</a>
+                    {% else %}
+                    <a id="like-btn/{{post.id}}" class="like-btn-alt" onclick="like('{{post.id}}')">&#127770;</a>
+                    {% endif %}
+                    <a id="like-count/{{post.id}}">{{ post.like.count }}</a>
+
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+    {% empty %}
+    <p>There are no posts yet.</p>
+    {% endfor %}
+    {% include "network/reusable_content/pagination.html" %}
+</div>
